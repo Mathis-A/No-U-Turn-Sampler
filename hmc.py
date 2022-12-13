@@ -1,5 +1,5 @@
 import numpy as np
-from leapfrog import leapfrog
+from utils import leapfrog
 
 
 class HamiltonianMonteCarlo:
@@ -11,12 +11,13 @@ class HamiltonianMonteCarlo:
         self.logp = logp
         self.grad_logp = grad_logp
         self.num_iterations = num_iterations
+        self.reject = 0
 
     def run(self, theta0):
         theta = [theta0]
         r = []  # Not currently used but could be for visualization.
 
-        for iter_ in range(self.num_iterations):
+        for _ in range(self.num_iterations):
             # Set r_0 and theta_m
             r_0 = self.rng.multivariate_normal(np.zeros_like(theta0),
                                                np.eye(len(theta0)))
@@ -43,6 +44,8 @@ class HamiltonianMonteCarlo:
                 # Accept
                 theta[-1] = theta_tilde
                 r[-1] = r_tilde
+            else:
+                self.reject += 1
             # else: theta[-1] and r[-1] are already set.
         return theta
 
