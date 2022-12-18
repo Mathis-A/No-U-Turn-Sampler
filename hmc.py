@@ -16,7 +16,7 @@ class HamiltonianMonteCarlo:
     def run(self, theta0):
         theta = [theta0]
         r = []  # Not currently used but could be for visualization.
-
+        
         for _ in range(self.num_iterations):
             # Set r_0 and theta_m
             r_0 = self.rng.multivariate_normal(np.zeros_like(theta0),
@@ -34,7 +34,7 @@ class HamiltonianMonteCarlo:
                                                 self.grad_logp,
                                                 self.eps)
                 # Each step could be extracted for visualisation purposes
-
+            
             # Acceptance probability
             alpha = min(1, np.exp(self.logp(theta_tilde) -
                                   r_tilde @ r_tilde / 2) /
@@ -93,6 +93,7 @@ class AutoHMC:
                 theta_tilde, r_tilde = leapfrog(theta_tilde, r_tilde,
                                                 self.grad_logp,
                                                 eps[-1])
+                print(theta_tilde, r_tilde)
                 # Each step could be extracted for visualisation purposes
 
             # Acceptance probability
